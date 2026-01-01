@@ -18,3 +18,25 @@ def test_invalid_user_login(page):
 
     expect(login_page.get_login_error()).to_be_visible(timeout=3000)
 
+@pytest.mark.smoke
+def test_valid_user_login(page):
+    home_page = HomePage(page)
+    login_page = LoginPage(page)
+
+    home_page.click_my_account()
+    home_page.click_login()
+
+    login_page.enter_email(Config.email)
+    login_page.enter_password(Config.password)
+    login_page.click_login_btn()
+    page.wait_for_timeout(3000)
+
+    homepagetitle = page.title()
+    print("Page title => ", homepagetitle)
+    if homepagetitle in "My Account":
+        print("Login success...")
+    else:
+        print("Login Failed...")
+
+
+
